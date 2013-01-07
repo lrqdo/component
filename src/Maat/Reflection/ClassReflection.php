@@ -9,9 +9,10 @@ namespace Alterway\Maat\Reflection;
  * @namespace Alterway\Maat\Reflection
  * @extends \ReflectionClass
  * @implements ClassReflectionInterface
+ * @implements CommentableInterface
  * @author Jean-François Lépine <jean-francois.lepine@alterway.fr>
  */
-class ClassReflection extends \ReflectionClass implements ClassReflectionInterface {
+class ClassReflection extends \ReflectionClass implements ClassReflectionInterface, CommentableInterface {
 
     /**
      * Get method by its name
@@ -50,5 +51,9 @@ class ClassReflection extends \ReflectionClass implements ClassReflectionInterfa
             array_push($methods, new MethodReflection($this->getName(), $method->getName(), $this));
         }
         return $methods;
+    }
+
+    public function getComment() {
+        return new CommentReflection($this->getDocComment(), $this);
     }
 }

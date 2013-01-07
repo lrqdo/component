@@ -10,9 +10,10 @@ use ReflectionMethod as splReflectionMethod;
  *
  * @namespace Alterway\Maat\Reflection
  * @implements MethodReflectionInterface
+ * @implements CommentableInterface
  * @author Jean-François Lépine <jean-francois.lepine@alterway.fr>
  */
-class MethodReflection extends \ReflectionMethod implements MethodReflectionInterface {
+class MethodReflection extends \ReflectionMethod implements MethodReflectionInterface, CommentableInterface {
 
     /**
      * @var ClassReflection
@@ -26,12 +27,13 @@ class MethodReflection extends \ReflectionMethod implements MethodReflectionInte
      * @param string $methodName
      * @param ClassReflection $class
      */
-    public function __construct($classname, $methodName, ClassReflection $classContext = null) {
-        parent::__construct($classname, $methodName);
+    public function __construct($class, $methodName, ClassReflection $classContext = null) {
+        parent::__construct($class, $methodName);
         if(is_null($classContext)) {
-            $classContext = new \ReflectionClass($classContext);
+            $classContext = new ClassReflection($class);
         }
         $this->classContext = $classContext;
+        $this->comment = new CommentReflection($this->getDocComment(), $this);
     }
 
     /**
@@ -41,5 +43,14 @@ class MethodReflection extends \ReflectionMethod implements MethodReflectionInte
      */
     public function getClassContext() {
         return $this->classContext;
+    }
+
+    /**
+     * Get the comment associated to this method
+     *
+     * @return CommentReflection
+     */
+    public function getComment() {
+        return $this->comment;
     }
 }

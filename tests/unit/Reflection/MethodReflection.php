@@ -10,7 +10,7 @@ require_once __DIR__.'/../../../src/Maat/Reflection/MethodReflection.php';
 require_once __DIR__.'/../../../src/Maat/Reflection/CommentReflectionInterface.php';
 require_once __DIR__.'/../../../src/Maat/Reflection/CommentReflection.php';
 
-class ClassReflection extends atoum {
+class MethodReflection extends atoum {
 
     private $object;
 

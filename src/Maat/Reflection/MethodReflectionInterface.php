@@ -10,7 +10,19 @@ namespace Alterway\Maat\Reflection;
 interface MethodReflectionInterface
 {
 
+    /**
+     * Get the class where the methdo is localized
+     *
+     * @return ClassReflection|\ReflectionClass
+     */
     public function getClassContext();
+
+    /**
+     * Get the comment associated to this method
+     *
+     * @return CommentReflection
+     */
+    public function getComment();
 
     public static function export($class, $name, $return = false);
 
