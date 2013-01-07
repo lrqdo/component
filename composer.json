@@ -1,0 +1,16 @@
+{
+    "name" : "alterway/audit",
+
+    "require": {
+        "symfony/dependency-injection" : "*",
+        "symfony/console" : "*",
+        "doctrine/common" : "*"
+    },
+
+    "require-dev": {
+        "atoum/atoum": "dev-master"
+    },
+
+    "bin-dir" : "bin"
+
+}
