@@ -1,0 +1,47 @@
+<?php
+namespace Alterway\Maat\Reflection;
+
+/**
+ * Customized Reflection method
+ *
+ * @namespace Alterway\Maat\Reflection
+ * @author Jean-François Lépine <jean-francois.lepine@alterway.fr>
+ */
+interface MethodReflectionInterface
+{
+
+    public function getClassContext();
+
+    public static function export($class, $name, $return = false);
+
+    public function getClosure($object);
+
+    public function getDeclaringClass();
+
+    public function getModifiers();
+
+    public function getPrototype();
+
+    public function invokeArgs($object, array $args);
+
+    public function isAbstract();
+
+    public function isConstructor();
+
+    public function isDestructor();
+
+    public function isFinal();
+
+    public function isPrivate();
+
+    public function isProtected();
+
+    public function isPublic();
+
+    public function isStatic();
+
+    public function setAccessible($accessible);
+
+    public function __toString();
+
+}
