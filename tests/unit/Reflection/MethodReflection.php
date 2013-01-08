@@ -2,14 +2,6 @@
 namespace Alterway\Maat\Reflection\tests\unit;
 use atoum;
 
-require_once __DIR__.'/../../../src/Maat/Reflection/CommentableInterface.php';
-require_once __DIR__.'/../../../src/Maat/Reflection/ClassReflectionInterface.php';
-require_once __DIR__.'/../../../src/Maat/Reflection/ClassReflection.php';
-require_once __DIR__.'/../../../src/Maat/Reflection/MethodReflectionInterface.php';
-require_once __DIR__.'/../../../src/Maat/Reflection/MethodReflection.php';
-require_once __DIR__.'/../../../src/Maat/Reflection/CommentReflectionInterface.php';
-require_once __DIR__.'/../../../src/Maat/Reflection/CommentReflection.php';
-
 class MethodReflection extends atoum {
 
     private $object;
