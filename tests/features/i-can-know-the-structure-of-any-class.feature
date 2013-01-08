@@ -10,11 +10,13 @@ Feature: Get the structure of any class
   Scenario: Get the methods of class
     Given that the class "class1" exists
     And the class "class1" has the following methods:
+      | name    |
       | method1 |
       | method2 |
     When I analyse the structure of the class
     Then I am informed that the class "class1" contains "2" methods
     Then I am informed that the class "class1" contains the following methods:
+      | name    |
       | method1 |
       | method2 |
 

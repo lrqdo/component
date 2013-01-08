@@ -4,7 +4,9 @@
     "require": {
         "symfony/dependency-injection" : "*",
         "symfony/console" : "*",
-        "doctrine/common" : "*"
+        "doctrine/common" : "*",
+        "symfony/yaml": "*",
+        "symfony/dependency-injection" : "*"
     },
 
     "require-dev": {
