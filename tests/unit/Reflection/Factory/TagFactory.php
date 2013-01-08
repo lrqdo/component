@@ -1,5 +1,5 @@
 <?php
-namespace Alterway\Maat\Reflection\Factory\tests\unit;
+namespace Alterway\Component\Reflection\Factory\tests\unit;
 use atoum;
 
 
@@ -10,7 +10,7 @@ class TagFactory extends atoum
 
     public function beforeTestMethod($method)
     {
-        $this->object = new \Alterway\Maat\Reflection\Factory\TagFactory;
+        $this->object = new \Alterway\Component\Reflection\Factory\TagFactory;
     }
 
     public function testICanBuildTagsFromText()
@@ -35,7 +35,7 @@ class TagFactory extends atoum
 
     public function testICanFactoryTagFromComment()
     {
-        $comment = new \mock\Alterway\Maat\Reflection\CommentReflectionInterface;
+        $comment = new \mock\Alterway\Component\Reflection\CommentReflectionInterface;
         $comment->getText = function () {
             return ''
                 . '/**'
@@ -55,6 +55,6 @@ class TagFactory extends atoum
         $text = '/** @tag1 */';
         $this
             ->object($this->object->factory($text))
-            ->isInstanceOf('\Alterway\Maat\Reflection\TagReflectionInterface');
+            ->isInstanceOf('\Alterway\Component\Reflection\TagReflectionInterface');
     }
 }

@@ -1,5 +1,5 @@
 <?php
-namespace Alterway\Maat\Reflection\tests\unit;
+namespace Alterway\Component\Reflection\tests\unit;
 use atoum;
 
 class MethodReflection extends atoum {
@@ -20,7 +20,7 @@ EOT;
         file_put_contents($tmp, $class);
         require_once $tmp;
 
-        $this->object = new \Alterway\Maat\Reflection\ClassReflection('\Test\MyClass1');
+        $this->object = new \Alterway\Component\Reflection\ClassReflection('\Test\MyClass1');
     }
 
     public function testAllMethodsAreFound() {
@@ -34,13 +34,13 @@ EOT;
     public function testICanRetrieveMethodByItsName() {
         $this
             ->object($this->object->getMethodByName('method1'))
-            ->isInstanceOf('\Alterway\Maat\Reflection\MethodReflectionInterface');
+            ->isInstanceOf('\Alterway\Component\Reflection\MethodReflectionInterface');
     }
 
     public function testICanGetTheCommentAssociatedToTheReflectedClass() {
         $this
             ->object($this->object->getComment())
-            ->isInstanceOf('\Alterway\Maat\Reflection\CommentReflectionInterface');
+            ->isInstanceOf('\Alterway\Component\Reflection\CommentReflectionInterface');
     }
 
     public function testICanObtainTheNameOfTheReflectedClass() {

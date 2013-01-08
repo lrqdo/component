@@ -1,5 +1,5 @@
 <?php
-namespace Alterway\Maat\Reflection;
+namespace Alterway\Component\Reflection;
 use ReflectionMethod as splReflectionMethod;
 
 
@@ -8,7 +8,7 @@ use ReflectionMethod as splReflectionMethod;
  *
  * We need to have a proxy to get customized comments
  *
- * @namespace Alterway\Maat\Reflection
+ * @namespace Alterway\Component\Reflection
  * @implements MethodReflectionInterface
  * @implements CommentableInterface
  * @author Jean-François Lépine <jean-francois.lepine@alterway.fr>

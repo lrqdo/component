@@ -1,10 +1,10 @@
 <?php
-namespace Alterway\Maat\Reflection;
+namespace Alterway\Component\Reflection;
 
 /**
  * Commentable element
  *
- * @namespace Alterway\Maat\Reflection
+ * @namespace Alterway\Component\Reflection
  * @author Jean-François Lépine <jean-francois.lepine@alterway.fr>
  */
 interface CommentableInterface {

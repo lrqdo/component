@@ -1,10 +1,10 @@
 <?php
-namespace Alterway\Maat\Reflection\Factory;
-use Alterway\Maat\Reflection\CommentReflectionInterface;
+namespace Alterway\Component\Reflection\Factory;
+use Alterway\Component\Reflection\CommentReflectionInterface;
 /**
- * Factory of Alterway\Maat\Reflection\TagReflection
+ * Factory of Alterway\Component\Reflection\TagReflection
  *
- * @namespace Alterway\Maat\Reflection\Factory
+ * @namespace Alterway\Component\Reflection\Factory
  * @author Jean-François Lépine <jean-francois.lepine@alterway.fr>
  */
 interface TagFactoryInterface
@@ -29,7 +29,7 @@ interface TagFactoryInterface
      * Factory a tag by text
      *
      * @param $text
-     * @return \Alterway\Maat\Reflection\TagReflection|null
+     * @return \Alterway\Component\Reflection\TagReflection|null
      */
     public function factory($text);
 

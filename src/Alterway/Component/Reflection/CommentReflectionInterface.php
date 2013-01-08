@@ -1,10 +1,10 @@
 <?php
-namespace Alterway\Maat\Reflection;
+namespace Alterway\Component\Reflection;
 
 /**
  * Customized Reflection comment
  *
- * @namespace Alterway\Maat\Reflection
+ * @namespace Alterway\Component\Reflection
  * @author Jean-François Lépine <jean-francois.lepine@alterway.fr>
  */
 interface CommentReflectionInterface

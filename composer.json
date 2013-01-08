@@ -1,5 +1,6 @@
 {
-    "name" : "alterway/audit",
+    "name" : "alterway/component",
+    "description": "Components used by Alterway",
 
     "require": {
         "symfony/dependency-injection" : "*",

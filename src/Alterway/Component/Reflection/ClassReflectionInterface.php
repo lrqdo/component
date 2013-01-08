@@ -1,5 +1,5 @@
 <?php
-namespace Alterway\Maat\Reflection;
+namespace Alterway\Component\Reflection;
 
 /**
  * Customized Reflection interface

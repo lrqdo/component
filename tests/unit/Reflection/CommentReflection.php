@@ -1,5 +1,5 @@
 <?php
-namespace Alterway\Maat\Reflection\tests\unit;
+namespace Alterway\Component\Reflection\tests\unit;
 use atoum;
 
 
@@ -12,8 +12,8 @@ class CommentReflection extends atoum
             . '/**'
             . ' * @author jeff'
             . ' */';
-        $commentable = new \mock\Alterway\Maat\Reflection\CommentableInterface;
-        $comment = new \Alterway\Maat\Reflection\CommentReflection($text, $commentable);
+        $commentable = new \mock\Alterway\Component\Reflection\CommentableInterface;
+        $comment = new \Alterway\Component\Reflection\CommentReflection($text, $commentable);
         $this
             ->string($comment->getText())
             ->isEqualTo($text);
@@ -25,8 +25,8 @@ class CommentReflection extends atoum
             . ' * @author jeff'
             . ' * @test'
             . ' */';
-        $commentable = new \mock\Alterway\Maat\Reflection\CommentableInterface;
-        $comment = new \Alterway\Maat\Reflection\CommentReflection($text, $commentable);
+        $commentable = new \mock\Alterway\Component\Reflection\CommentableInterface;
+        $comment = new \Alterway\Component\Reflection\CommentReflection($text, $commentable);
 
         $this
             ->array($comment->getTags())
