@@ -23,7 +23,7 @@ class MethodReflection extends \ReflectionMethod implements MethodReflectionInte
     /**
      * Constructor
      *
-     * @param string $classname
+     * @param string $class
      * @param string $methodName
      * @param ClassReflection $class
      */

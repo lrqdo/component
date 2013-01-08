@@ -96,7 +96,6 @@ interface ClassReflectionInterface
 
     public function isUserDefined();
 
-
     public function setStaticPropertyValue($name, $value);
 
 

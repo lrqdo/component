@@ -26,6 +26,13 @@ class CommentReflection implements CommentReflectionInterface
     private $text;
 
     /**
+     * Tags (annotations)
+     *
+     * @var array
+     */
+    private $tags;
+
+    /**
      * Constructor
      *
      * @param string $text
@@ -35,6 +42,9 @@ class CommentReflection implements CommentReflectionInterface
     {
         $this->text = (string) $text;
         $this->commented = $commented;
+
+        $factory = new Factory\TagFactory;
+        $this->tags = $factory->factoryTags($this->text);
     }
 
     /**
@@ -55,6 +65,15 @@ class CommentReflection implements CommentReflectionInterface
     public function getCommented()
     {
         return $this->commented;
+    }
+
+    /**
+     * Get the tags (annotations)
+     *
+     * @return array
+     */
+    public function getTags() {
+        return $this->tags;
     }
 
 }
