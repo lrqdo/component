@@ -1,16 +1,19 @@
 <?php
-use
-    mageekguy\atoum;
+use mageekguy\atoum;
 
-
+define('APP_PATH', __DIR__ . '/../..');
+$runner->setBootstrapFile(__DIR__ . '/bootstrap.php');
 $script->addTestAllDirectory(__DIR__);
 
-// $cliReport = new atoum\reports\realtime\cli();
+// cli
 $cliReport = $script->addDefaultReport();
-
 $stdOutWriter = new atoum\writers\std\out();
 $cliReport->addWriter($stdOutWriter);
-
-
 $runner->addReport($cliReport);
-$runner->setBootstrapFile(__DIR__ . '/bootstrap.php');
+
+
+// xunit
+$xunit = new \mageekguy\atoum\reports\asynchronous\xunit();
+$writer = new \mageekguy\atoum\writers\file(APP_PATH . '/build/logs/junit.xml');
+$xunit->addWriter($writer);
+$runner->addReport($xunit);

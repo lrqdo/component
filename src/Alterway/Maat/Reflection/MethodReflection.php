@@ -37,7 +37,7 @@ class MethodReflection extends \ReflectionMethod implements MethodReflectionInte
     }
 
     /**
-     * Get the class where the methdo is localized
+     * Get the class where the method is localized
      *
      * @return ClassReflection|\ReflectionClass
      */
