@@ -1,5 +1,5 @@
 <?php
-namespace Alterway\Maat\Reflection\tests\unit;
+namespace Alterway\Component\Reflection\tests\unit;
 use atoum;
 
 class TagReflection extends atoum
@@ -8,8 +8,8 @@ class TagReflection extends atoum
     public function testICanUseATag()
     {
         $this
-            ->object(new \Alterway\Maat\Reflection\TagReflection('author', 'jeff'))
-            ->isInstanceOf('\Alterway\Maat\Reflection\TagReflectionInterface');
+            ->object(new \Alterway\Component\Reflection\TagReflection('author', 'jeff'))
+            ->isInstanceOf('\Alterway\Component\Reflection\TagReflectionInterface');
     }
 
 }

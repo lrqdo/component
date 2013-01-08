@@ -1,10 +1,10 @@
 <?php
-namespace Alterway\Maat\Reflection;
+namespace Alterway\Component\Reflection;
 
 /**
  * Represents a tag (annotation, phpdoc)
  *
- * @namespace Alterway\Maat\Reflection
+ * @namespace Alterway\Component\Reflection
  * @implements TagReflectionInterface
  * @author Jean-François Lépine <jean-francois.lepine@alterway.fr>
  */

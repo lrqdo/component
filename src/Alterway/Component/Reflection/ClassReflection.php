@@ -1,12 +1,12 @@
 <?php
-namespace Alterway\Maat\Reflection;
+namespace Alterway\Component\Reflection;
 
 /**
  * Customized Reflection class
  *
  * We need to have a proxy to get customized methods
  *
- * @namespace Alterway\Maat\Reflection
+ * @namespace Alterway\Component\Reflection
  * @extends \ReflectionClass
  * @implements ClassReflectionInterface
  * @implements CommentableInterface
