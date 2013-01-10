@@ -1,7 +1,9 @@
 <?php
 namespace Alterway\Component\Reflection\tests\unit;
 use atoum;
-
+/**
+ * #tags reflection object
+ */
 class MethodReflection extends atoum {
 
     private $object;

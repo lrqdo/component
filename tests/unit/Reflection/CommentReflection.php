@@ -2,7 +2,9 @@
 namespace Alterway\Component\Reflection\tests\unit;
 use atoum;
 
-
+/**
+ * #tags reflection object
+ */
 class CommentReflection extends atoum
 {
 

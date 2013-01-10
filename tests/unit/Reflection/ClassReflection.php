@@ -2,6 +2,9 @@
 namespace Alterway\Component\Reflection\tests\unit;
 use atoum;
 
+/**
+ * #tags reflection object
+ */
 class ClassReflection extends atoum {
 
     private $object;
