@@ -4,6 +4,10 @@
 namespace Alterway\Component\Workflow;
 
 
+use Alterway\Component\Workflow\Exception\AlreadyInEndingNodeException;
+use Alterway\Component\Workflow\Exception\InvalidTokenException;
+use Alterway\Component\Workflow\Exception\MoreThanOneOpenTransitionException;
+use Alterway\Component\Workflow\Exception\NoOpenTransitionException;
 use Alterway\Component\Workflow\Node\NodeInterface;
 use Alterway\Component\Workflow\Node\NodeMapInterface;
 
@@ -38,7 +42,7 @@ class Workflow implements WorkflowInterface
     public function setToken(Token $token)
     {
         if (!$this->nodes->has($token)) {
-            throw new \LogicException(sprintf('invalid token "%s".', $token));
+            throw new InvalidTokenException();
         }
 
         $this->current = $this->nodes->get($token);
@@ -60,20 +64,19 @@ class Workflow implements WorkflowInterface
     public function next(ContextInterface $context)
     {
         if ($this->current === $this->end) {
-            throw new \LogicException('Already at the ending node.');
+            throw new AlreadyInEndingNodeException();
         }
 
         $transitions = $this->current->getOpenTransitions($context);
 
         if (0 === count($transitions)) {
-            throw new \LogicException('No open transition with current context.');
+            throw new NoOpenTransitionException();
         } elseif (1 < count($transitions)) {
-            //throw new LogicException('More than one open transition with current context.');
-            shuffle($transitions);
+            throw new MoreThanOneOpenTransitionException();
         }
 
         $transition = array_pop($transitions);
-        $this->current = $transition->getDestination();
+        $this->setToken(new Token($transition->getDestination()->getName()));
 
         // TODO: Fire an event to be able to attach behavior to the current node
 

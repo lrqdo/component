@@ -4,6 +4,8 @@
 namespace Alterway\Component\Workflow\Node;
 
 
+use Symfony\Component\Config\Definition\NodeInterface;
+
 class NodeMap implements NodeMapInterface
 {
     /**
@@ -30,6 +32,13 @@ class NodeMap implements NodeMapInterface
         return $this->items[$name];
     }
 
+    public function add(NodeInterface $node)
+    {
+        $this->items[$node->getName()] = $node;
+
+        return $this;
+    }
+
     /**
      * @inheritdoc
      */
@@ -38,5 +47,10 @@ class NodeMap implements NodeMapInterface
         $name = (string)$name;
 
         return isset($this->items[$name]);
+    }
+
+    public function analyse()
+    {
+        exit('prout');
     }
 }
