@@ -3,7 +3,9 @@
 
 namespace Alterway\Component\Workflow\tests\unit;
 
+use Alterway\Component\Workflow\Builder;
 use Alterway\Component\Workflow\Node\Node;
+use Alterway\Component\Workflow\Token;
 use atoum;
 
 class Workflow extends atoum
@@ -22,13 +24,13 @@ class Workflow extends atoum
             return true;
         };
 
-        $builder = new \Alterway\Component\Workflow\Builder(new Node('A'), new Node('F'));
+        $builder = new Builder('A', 'F');
         $builder
-            ->link(new Node('A'), new Node('B'), $spec)
-            ->link(new Node('B'), new Node('C'), $spec)
-            ->link(new Node('C'), new Node('D'), $spec)
-            ->link(new Node('D'), new Node('E'), $spec)
-            ->link(new Node('E'), new Node('F'), $spec);
+            ->link('A', 'B', $spec)
+            ->link('B', 'C', $spec)
+            ->link('C', 'D', $spec)
+            ->link('D', 'E', $spec)
+            ->link('E', 'F', $spec);
 
         $workflow = $builder->getWorflow();
 
@@ -41,22 +43,22 @@ class Workflow extends atoum
             ->isEqualTo('F');
     }
 
-    /*public function testICantHaveMoreThan2OpenedTransitions()
+    public function testICantHaveMoreThan2OpenedTransitions()
     {
         $spec = new \mock\Alterway\Component\Workflow\SpecificationInterface();
         $this->calling($spec)->isStatisfiedBy = function () {
             return true;
         };
 
-        $builder = new \Alterway\Component\Workflow\Builder('A', 'G');
+        $builder = new Builder('A', 'G');
         $builder
             ->link('A', 'B', $spec)
             ->link('A', 'C', $spec);
 
-        $this->workflow = $builder->getWorflow();
+        $workflow = $builder->getWorflow();
 
         try {
-            $this->workflow->next($this->context);
+            $workflow->next($this->context);
         } catch (\Exception $e) {
             $this
                 ->exception($e)
@@ -72,7 +74,7 @@ class Workflow extends atoum
             return true;
         };
 
-        $builder = new \Alterway\Component\Workflow\Builder('A', 'C');
+        $builder = new Builder('A', 'C');
         $builder
             ->link('A', 'B', $spec)
             ->link('B', 'C', $spec);
@@ -98,7 +100,7 @@ class Workflow extends atoum
             return false;
         };
 
-        $builder = new \Alterway\Component\Workflow\Builder('A', 'B');
+        $builder = new Builder('A', 'B');
         $builder
             ->link('A', 'B', $spec);
 
@@ -112,7 +114,7 @@ class Workflow extends atoum
                 ->isInstanceOf('Alterway\Component\Workflow\Exception\NoOpenTransitionException')
                 ->hasMessage('No open transition with current context');
         }
-    }*/
+    }
 
     public function testICantGoToNextCauseWrongToken()
     {
@@ -121,17 +123,15 @@ class Workflow extends atoum
             return true;
         };
 
-        $builder = new \Alterway\Component\Workflow\Builder(new Node('A'), new Node('C'));
+        $builder = new \Alterway\Component\Workflow\Builder('A', 'C');
         $builder
-            ->link(new Node('A'), new Node('B'), $spec)
-            ->link(new Node('B'), new Node('X'), $spec);
+            ->link('A', 'B', $spec)
+            ->link('B', 'C', $spec);
 
         $workflow = $builder->getWorflow();
 
         try {
-            for ($i = 0; $i < 3; $i++) {
-                $workflow->next($this->context);
-            }
+            $workflow->setToken(new Token('D'));
         } catch (\Exception $e) {
             $this
                 ->exception($e)

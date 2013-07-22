@@ -8,7 +8,7 @@ use Alterway\Component\Workflow\Node\NodeInterface;
 use Alterway\Component\Workflow\Node\NodeMap;
 use Alterway\Component\Workflow\Node\NodeMapInterface;
 
-class Builder implements  BuilderInterface
+class Builder implements BuilderInterface
 {
     /**
      * @var NodeMapInterface
@@ -16,34 +16,32 @@ class Builder implements  BuilderInterface
     private $nodes;
 
     /**
-     * @var NodeInterface
+     * @var string
      */
     private $start;
 
     /**
-     * @var NodeInterface
+     * @var string
      */
     private $end;
 
 
-    public function __construct(NodeInterface $start, NodeInterface $end)
+    public function __construct($start, $end)
     {
         $this->nodes = new NodeMap();
-        $this->start = $this->nodes->get($start->getName());
-        $this->end = $this->nodes->get($end->getName());
+        $this->start = $this->nodes->get($start);
+        $this->end = $this->nodes->get($end);
     }
 
-    public function link(NodeInterface $src, NodeInterface $dst, SpecificationInterface $spec)
+    public function link($src, $dst, SpecificationInterface $spec)
     {
-        $src = $this->nodes->add($src);
-
-        if ($src === $this->end) {
+        $src = $this->nodes->get($src);
+        if ($src->getName() === $this->end) {
             throw new \LogicException('Cannot link from ending node.');
         }
 
-        $dst = $this->nodes->add($dst->getName());
-
-        if ($dst === $this->start) {
+        $dst = $this->nodes->get($dst);
+        if ($dst->getName() === $this->start) {
             throw new \LogicException('Cannot link to starting node.');
         }
 
@@ -54,7 +52,6 @@ class Builder implements  BuilderInterface
 
     public function getWorflow()
     {
-        $this->nodes->analyse();
         return new Workflow($this->start, $this->end, $this->nodes);
     }
 }

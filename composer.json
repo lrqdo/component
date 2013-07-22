@@ -1,7 +1,11 @@
 {
     "name" : "alterway/component",
     "description": "Components used by Alterway",
-
+    "autoload": {
+        "psr-0": {
+            "Alterway": "src/"
+        }
+    },
     "require": {
         "symfony/dependency-injection" : "*",
         "symfony/console" : "*",

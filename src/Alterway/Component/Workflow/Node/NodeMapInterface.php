@@ -7,7 +7,7 @@ namespace Alterway\Component\Workflow\Node;
 interface NodeMapInterface
 {
     /**
-     * Return the node defined by the given name
+     * Return the node defined by the given name (add it to the nodemap if not already exist)
      *
      * @param $name
      * @return mixed

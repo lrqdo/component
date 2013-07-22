@@ -4,17 +4,15 @@
 namespace Alterway\Component\Workflow;
 
 
-use Alterway\Component\Workflow\Node\NodeInterface;
-
 class Transition implements TransitionInterface
 {
     /**
-     * @var NodeInterface
+     * @var string
      */
     private $src;
 
     /**
-     * @var NodeInterface
+     * @var string
      */
     private $dst;
 
@@ -23,7 +21,7 @@ class Transition implements TransitionInterface
      */
     private $spec;
 
-    public function __construct(NodeInterface $src, NodeInterface $dst, SpecificationInterface $spec)
+    public function __construct($src, $dst, SpecificationInterface $spec)
     {
         $this->src = $src;
         $this->dst = $dst;
