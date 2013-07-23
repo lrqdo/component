@@ -4,12 +4,15 @@
 namespace Alterway\Component\Workflow;
 
 
+use Alterway\Component\Event\WorkflowEvent;
 use Alterway\Component\Workflow\Exception\AlreadyInEndingNodeException;
 use Alterway\Component\Workflow\Exception\InvalidTokenException;
 use Alterway\Component\Workflow\Exception\MoreThanOneOpenTransitionException;
 use Alterway\Component\Workflow\Exception\NoOpenTransitionException;
 use Alterway\Component\Workflow\Node\NodeInterface;
 use Alterway\Component\Workflow\Node\NodeMapInterface;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class Workflow implements WorkflowInterface
 {
@@ -28,12 +31,22 @@ class Workflow implements WorkflowInterface
      */
     private $nodes;
 
-    public function __construct(NodeInterface $start, NodeInterface $end, NodeMapInterface $nodes)
+    /**
+     * @var EventDispatcher
+     */
+    protected $eventDispatcher;
+
+    public function __construct(NodeInterface $start, NodeInterface $end, NodeMapInterface $nodes, $eventDispatcher)
     {
         $this->start = $start;
         $this->end = $end;
         $this->nodes = $nodes;
         $this->current = $start;
+
+        if (null === $eventDispatcher) {
+            $eventDispatcher = new EventDispatcher();
+        }
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -61,6 +74,14 @@ class Workflow implements WorkflowInterface
     /**
      * @inheritdoc
      */
+    public function getEventDispatcher()
+    {
+        return $this->eventDispatcher;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function next(ContextInterface $context)
     {
         if ($this->current === $this->end) {
@@ -78,7 +99,10 @@ class Workflow implements WorkflowInterface
         $transition = array_pop($transitions);
         $this->setToken(new Token($transition->getDestination()->getName()));
 
-        // TODO: Fire an event to be able to attach behavior to the current node
+        $context->set('workflow', $this);
+
+        $event = new WorkflowEvent($context);
+        $this->eventDispatcher->dispatch($transition->getDestination()->getName(), $event);
 
         return $this;
     }

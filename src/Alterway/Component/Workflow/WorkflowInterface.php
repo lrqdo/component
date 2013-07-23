@@ -22,6 +22,11 @@ interface WorkflowInterface
     public function getToken();
 
     /**
+     * @return EventDispatcherInterface
+     */
+    public function getEventDispatcher();
+
+    /**
      * Move the current token to the next step of the workflow
      *
      * @param ContextInterface $context

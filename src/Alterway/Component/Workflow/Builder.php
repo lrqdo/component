@@ -26,11 +26,12 @@ class Builder implements BuilderInterface
     private $end;
 
 
-    public function __construct($start, $end)
+    public function __construct($start, $end, $dispatcher = null)
     {
         $this->nodes = new NodeMap();
         $this->start = $this->nodes->get($start);
         $this->end = $this->nodes->get($end);
+        $this->eventDispatcher = $dispatcher;
     }
 
     public function link($src, $dst, SpecificationInterface $spec)
@@ -52,6 +53,6 @@ class Builder implements BuilderInterface
 
     public function getWorflow()
     {
-        return new Workflow($this->start, $this->end, $this->nodes);
+        return new Workflow($this->start, $this->end, $this->nodes, $this->eventDispatcher);
     }
 }
