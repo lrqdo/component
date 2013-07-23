@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Alterway\Component\Event;
+namespace Alterway\Component\Workflow\Event;
 
 
 use Alterway\Component\Workflow\ContextInterface;

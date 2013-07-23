@@ -3,8 +3,7 @@
 
 namespace Alterway\Component\Workflow;
 
-
-use Alterway\Component\Event\WorkflowEvent;
+use Alterway\Component\Workflow\Event\WorkflowEvent;
 use Alterway\Component\Workflow\Exception\AlreadyInEndingNodeException;
 use Alterway\Component\Workflow\Exception\InvalidTokenException;
 use Alterway\Component\Workflow\Exception\MoreThanOneOpenTransitionException;
@@ -12,7 +11,6 @@ use Alterway\Component\Workflow\Exception\NoOpenTransitionException;
 use Alterway\Component\Workflow\Node\NodeInterface;
 use Alterway\Component\Workflow\Node\NodeMapInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class Workflow implements WorkflowInterface
 {
