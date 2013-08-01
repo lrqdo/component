@@ -6,5 +6,5 @@ namespace Alterway\Component\Workflow;
 
 interface SpecificationInterface
 {
-    public function isStatisfiedBy(ContextInterface $context);
+    public function isSatisfiedBy(ContextInterface $context);
 }
