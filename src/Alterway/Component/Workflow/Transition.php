@@ -33,7 +33,7 @@ class Transition implements TransitionInterface
      */
     public function isOpen(ContextInterface $context)
     {
-        return $this->spec->isStatisfiedBy($context);
+        return $this->spec->isSatisfiedBy($context);
     }
 
     /**
