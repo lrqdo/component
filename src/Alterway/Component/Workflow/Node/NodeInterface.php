@@ -5,6 +5,7 @@ namespace Alterway\Component\Workflow\Node;
 
 
 use Alterway\Component\Workflow\ContextInterface;
+use Alterway\Component\Workflow\SpecificationInterface;
 use Alterway\Component\Workflow\TransitionInterface;
 
 interface NodeInterface
@@ -12,23 +13,24 @@ interface NodeInterface
     /**
      * Return the current node's name
      *
-     * @return mixed
+     * @return string
      */
     public function getName();
 
     /**
      * Add a transition for the current node
      *
-     * @param TransitionInterface $transition
-     * @return mixed
+     * @param string $dst
+     * @param SpecificationInterface $spec
+     * @return NodeInterface
      */
-    public function addTransition(TransitionInterface $transition);
+    public function addTransition($dst, SpecificationInterface $spec);
 
     /**
      * Return the opened transitions
      *
      * @param ContextInterface $context
-     * @return mixed
+     * @return array
      */
     public function getOpenTransitions(ContextInterface $context);
 }

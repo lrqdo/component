@@ -3,8 +3,7 @@
 
 namespace Alterway\Component\Workflow;
 
-
-use Alterway\Component\Workflow\Node\NodeInterface;
+use Alterway\Component\Workflow\Node\Node;
 use Alterway\Component\Workflow\Node\NodeMap;
 use Alterway\Component\Workflow\Node\NodeMapInterface;
 
@@ -26,12 +25,20 @@ class Builder implements BuilderInterface
     private $end;
 
 
-    public function __construct($start, $end, $dispatcher = null)
+    public function __construct($dispatcher = null)
     {
         $this->nodes = new NodeMap();
-        $this->start = $this->nodes->get($start);
-        $this->end = $this->nodes->get($end);
         $this->eventDispatcher = $dispatcher;
+
+        $this->start = new Node('start');
+        $this->end = new Node('end');
+    }
+
+    public function open($dst, SpecificationInterface $spec)
+    {
+        $this->start->addTransition($dst, $spec);
+
+        return $this;
     }
 
     public function link($src, $dst, SpecificationInterface $spec)
@@ -46,7 +53,14 @@ class Builder implements BuilderInterface
             throw new \LogicException('Cannot link to starting node.');
         }
 
-        $src->addTransition(new Transition($src, $dst, $spec));
+        $src->addTransition($dst, $spec);
+
+        return $this;
+    }
+
+    public function close($src, SpecificationInterface $spec)
+    {
+        $src->addTransition($this->end, $spec);
 
         return $this;
     }
