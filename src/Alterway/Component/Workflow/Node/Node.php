@@ -36,9 +36,9 @@ class Node implements NodeInterface
     /**
      * @inheritdoc
      */
-    public function addTransition($dst, SpecificationInterface $spec)
+    public function addTransition(NodeInterface $dst, SpecificationInterface $spec)
     {
-        $this->transitions[] = new Transition($this->name, $dst, $spec);
+        $this->transitions[] = new Transition($this, $dst, $spec);
     }
 
     /**

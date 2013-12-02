@@ -10,27 +10,33 @@ interface WorkflowInterface
      * Set the current token
      *
      * @param Token $token
-     * @return mixed
+     *
+     * @return WorkflowInterface
      */
     public function setToken(Token $token);
 
     /**
      * Return the current token
      *
-     * @return mixed
+     * @return TokenInterface
      */
     public function getToken();
-
-    /**
-     * @return EventDispatcherInterface
-     */
-    public function getEventDispatcher();
 
     /**
      * Move the current token to the next step of the workflow
      *
      * @param ContextInterface $context
-     * @return mixed
+     *
+     * @return WorkflowInterface
      */
     public function next(ContextInterface $context);
+
+    /**
+     * Initialize the workflow
+     *
+     * @param ContextInterface $context
+     *
+     * @return WorkflowInterface
+     */
+    public function init(ContextInterface $context);
 }
