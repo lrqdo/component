@@ -14,8 +14,6 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class Workflow implements WorkflowInterface
 {
-    const TECHNICAL_STARTING_NODE = 'technicalStart';
-
     /**
      * @var NodeInterface
      */
@@ -91,7 +89,7 @@ class Workflow implements WorkflowInterface
 
     public function init(ContextInterface $context)
     {
-        $this->current = $this->nodes->get(Workflow::TECHNICAL_STARTING_NODE);
+        $this->current = $this->start;
         $this->next($context);
     }
 }
