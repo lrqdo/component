@@ -26,22 +26,15 @@ class Builder implements BuilderInterface
 
     public function open($src, SpecificationInterface $spec)
     {
-        $this->start = $this->nodes->get($src);
-        $this->nodes->get(Workflow::TECHNICAL_STARTING_NODE)->addTransition($this->start, $spec);
+        $this->start = $this->nodes->get(uniqid());
+        $this->start->addTransition($this->nodes->get($src), $spec);
 
         return $this;
     }
 
     public function link($src, $dst, SpecificationInterface $spec)
     {
-        $src = $this->nodes->get($src);
-        $dst = $this->nodes->get($dst);
-
-        if ($dst->getName() === $this->start) {
-            throw new \LogicException('Cannot link to starting node.');
-        }
-
-        $src->addTransition($dst, $spec);
+        $this->nodes->get($src)->addTransition($this->nodes->get($dst), $spec);
 
         return $this;
     }
@@ -49,7 +42,7 @@ class Builder implements BuilderInterface
     public function getWorflow()
     {
         if (null === $this->start) {
-            throw new \LogicException('No defined starting node');
+            throw new \LogicException('No starting node defined');
         };
 
         return new Workflow($this->start, $this->nodes, $this->eventDispatcher);
