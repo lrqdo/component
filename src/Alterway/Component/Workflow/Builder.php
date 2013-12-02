@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Alterway\Component\Workflow;
-
 
 use Alterway\Component\Workflow\Node\NodeInterface;
 use Alterway\Component\Workflow\Node\NodeMap;
@@ -16,43 +14,44 @@ class Builder implements BuilderInterface
     private $nodes;
 
     /**
-     * @var string
+     * @var NodeInterface
      */
-    private $start;
+    private $start = null;
 
-    /**
-     * @var string
-     */
-    private $end;
-
-
-    public function __construct($start, $end, $dispatcher = null)
+    public function __construct($dispatcher = null)
     {
         $this->nodes = new NodeMap();
-        $this->start = $this->nodes->get($start);
-        $this->end = $this->nodes->get($end);
         $this->eventDispatcher = $dispatcher;
+    }
+
+    public function open($src, SpecificationInterface $spec)
+    {
+        $this->start = $this->nodes->get($src);
+        $this->nodes->get(Workflow::TECHNICAL_STARTING_NODE)->addTransition($this->start, $spec);
+
+        return $this;
     }
 
     public function link($src, $dst, SpecificationInterface $spec)
     {
         $src = $this->nodes->get($src);
-        if ($src->getName() === $this->end) {
-            throw new \LogicException('Cannot link from ending node.');
-        }
-
         $dst = $this->nodes->get($dst);
+
         if ($dst->getName() === $this->start) {
             throw new \LogicException('Cannot link to starting node.');
         }
 
-        $src->addTransition(new Transition($src, $dst, $spec));
+        $src->addTransition($dst, $spec);
 
         return $this;
     }
 
     public function getWorflow()
     {
-        return new Workflow($this->start, $this->end, $this->nodes, $this->eventDispatcher);
+        if (null === $this->start) {
+            throw new \LogicException('No defined starting node');
+        };
+
+        return new Workflow($this->start, $this->nodes, $this->eventDispatcher);
     }
 }

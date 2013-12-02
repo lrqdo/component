@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Alterway\Component\Workflow;
-
 
 interface SpecificationInterface
 {

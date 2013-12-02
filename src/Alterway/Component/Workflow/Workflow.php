@@ -14,15 +14,12 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class Workflow implements WorkflowInterface
 {
-    /**
-     * @var NodeInterface
-     */
-    private $start;
+    const TECHNICAL_STARTING_NODE = 'technicalStart';
 
     /**
      * @var NodeInterface
      */
-    private $end;
+    private $start;
 
     /**
      * @var NodeMapInterface
@@ -34,10 +31,9 @@ class Workflow implements WorkflowInterface
      */
     protected $eventDispatcher;
 
-    public function __construct(NodeInterface $start, NodeInterface $end, NodeMapInterface $nodes, $eventDispatcher)
+    public function __construct(NodeInterface $start, NodeMapInterface $nodes, $eventDispatcher)
     {
         $this->start = $start;
-        $this->end = $end;
         $this->nodes = $nodes;
         $this->current = $start;
 
@@ -72,20 +68,8 @@ class Workflow implements WorkflowInterface
     /**
      * @inheritdoc
      */
-    public function getEventDispatcher()
-    {
-        return $this->eventDispatcher;
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function next(ContextInterface $context)
     {
-        if ($this->current === $this->end) {
-            throw new AlreadyInEndingNodeException();
-        }
-
         $transitions = $this->current->getOpenTransitions($context);
 
         if (0 === count($transitions)) {
@@ -103,5 +87,11 @@ class Workflow implements WorkflowInterface
         $this->eventDispatcher->dispatch($transition->getDestination()->getName(), $event);
 
         return $this;
+    }
+
+    public function init(ContextInterface $context)
+    {
+        $this->current = $this->nodes->get(Workflow::TECHNICAL_STARTING_NODE);
+        $this->next($context);
     }
 }
