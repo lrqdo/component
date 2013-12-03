@@ -34,7 +34,7 @@ interface ContextInterface
      * Sets a service container parameter.
      *
      * @param string $name  The parameter name
-     * @param mixed $value The parameter value
+     * @param mixed  $value The parameter value
      *
      * @api
      */

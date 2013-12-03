@@ -19,8 +19,9 @@ interface NodeInterface
     /**
      * Add a transition for the current node
      *
-     * @param NodeInterface $dst
+     * @param NodeInterface          $dst
      * @param SpecificationInterface $spec
+     *
      * @return NodeInterface
      */
     public function addTransition(NodeInterface $dst, SpecificationInterface $spec);
@@ -29,6 +30,7 @@ interface NodeInterface
      * Return the opened transitions
      *
      * @param ContextInterface $context
+     *
      * @return array
      */
     public function getOpenTransitions(ContextInterface $context);
