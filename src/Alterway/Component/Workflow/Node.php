@@ -1,13 +1,10 @@
 <?php
 
-namespace Alterway\Component\Workflow\Node;
 
-use Alterway\Component\Workflow\ContextInterface;
-use Alterway\Component\Workflow\SpecificationInterface;
-use Alterway\Component\Workflow\Transition;
-use Alterway\Component\Workflow\TransitionInterface;
+namespace Alterway\Component\Workflow;
 
-class Node implements NodeInterface
+
+class Node
 {
     /**
      * @var string
@@ -19,6 +16,7 @@ class Node implements NodeInterface
      */
     private $transitions;
 
+
     public function __construct($name)
     {
         $this->name = (string)$name;
@@ -26,7 +24,9 @@ class Node implements NodeInterface
     }
 
     /**
-     * @inheritdoc
+     * Returns the current node's name.
+     *
+     * @return string
      */
     public function getName()
     {
@@ -34,22 +34,31 @@ class Node implements NodeInterface
     }
 
     /**
-     * @inheritdoc
+     * Adds a transition.
+     *
+     * @param Node $dst
+     * @param SpecificationInterface $spec
+     *
+     * @return Node
      */
-    public function addTransition(NodeInterface $dst, SpecificationInterface $spec)
+    public function addTransition(Node $dst, SpecificationInterface $spec)
     {
         $this->transitions[] = new Transition($this, $dst, $spec);
     }
 
     /**
-     * @inheritdoc
+     * Returns the opened transitions.
+     *
+     * @param ContextInterface $context
+     *
+     * @return array
      */
     public function getOpenTransitions(ContextInterface $context)
     {
         $transitions = array();
 
         foreach ($this->transitions as $transition) {
-            /** @var $transition TransitionInterface */
+            /** @var $transition Transition */
             if ($transition->isOpen($context)) {
                 $transitions[] = $transition;
             }

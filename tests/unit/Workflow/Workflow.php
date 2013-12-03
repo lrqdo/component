@@ -3,140 +3,141 @@
 
 namespace Alterway\Component\Workflow\tests\unit;
 
-use Alterway\Component\Workflow\Builder;
-use Alterway\Component\Workflow\Node\Node;
-use Alterway\Component\Workflow\Token;
+
 use atoum;
 
 class Workflow extends atoum
 {
-    private $context;
-
     public function beforeTestMethod($method)
     {
+        // mocks
+        $this->dispatcher = new \mock\Symfony\Component\EventDispatcher\EventDispatcherInterface();
+
+        $this->specification = new \mock\Alterway\Component\Workflow\SpecificationInterface();
+        $this->calling($this->specification)->isSatisfiedBy = function() { return true; };
+
         $this->context = new \mock\Alterway\Component\Workflow\ContextInterface();
+
+        // objects
+        $this->builder = new \Alterway\Component\Workflow\Builder($this->dispatcher);
     }
 
     public function testICanLaunchACorrectWorkflow()
     {
-        $spec = new \mock\Alterway\Component\Workflow\SpecificationInterface();
-        $this->calling($spec)->isStatisfiedBy = function () {
-            return true;
-        };
-
-        $builder = new Builder('A', 'F');
-        $builder
-            ->link('A', 'B', $spec)
-            ->link('B', 'C', $spec)
-            ->link('C', 'D', $spec)
-            ->link('D', 'E', $spec)
-            ->link('E', 'F', $spec);
-
-        $workflow = $builder->getWorflow();
-
-        for ($i = 0; $i < 5; $i++) {
-            $workflow->next($this->context);
-        }
+        $this
+            ->builder
+            ->open('A', $this->specification)
+            ->getWorflow()
+            ->initialize()
+            ->next($this->context)
+            ;
 
         $this
-            ->variable($workflow->getToken())
-            ->isEqualTo('F');
+            ->mock($this->dispatcher)
+            ->call('dispatch')
+            ->once()
+            ;
     }
 
-    public function testICantHaveMoreThan2OpenedTransitions()
+    public function testICannotAddLinkOnBuilderWorkflowWithoutStartingNode()
     {
-        $spec = new \mock\Alterway\Component\Workflow\SpecificationInterface();
-        $this->calling($spec)->isStatisfiedBy = function () {
-            return true;
-        };
-
-        $builder = new Builder('A', 'G');
-        $builder
-            ->link('A', 'B', $spec)
-            ->link('A', 'C', $spec);
-
-        $workflow = $builder->getWorflow();
-
         try {
-            $workflow->next($this->context);
+            $this
+                ->builder
+                ->link('A', 'B', $this->specification)
+                ;
         } catch (\Exception $e) {
             $this
                 ->exception($e)
-                ->isInstanceOf('Alterway\Component\Workflow\Exception\MoreThanOneOpenTransitionException')
-                ->hasMessage('More than one open transition with current context');
+                ->isInstanceOf('Alterway\Component\Workflow\Exception\NoStartingNodeBuilderException')
+                ;
         }
     }
 
-    public function testICantGoToNextIfAlreadyOnEndingNode()
+    public function testICannotGetFromBuilderWorkflowWithoutStartingNode()
     {
-        $spec = new \mock\Alterway\Component\Workflow\SpecificationInterface();
-        $this->calling($spec)->isStatisfiedBy = function () {
-            return true;
-        };
-
-        $builder = new Builder('A', 'C');
-        $builder
-            ->link('A', 'B', $spec)
-            ->link('B', 'C', $spec);
-
-        $workflow = $builder->getWorflow();
-
         try {
-            for ($i = 0; $i < 3; $i++) {
-                $workflow->next($this->context);
-            }
+            $this
+                ->builder
+                ->getWorflow()
+                ;
         } catch (\Exception $e) {
             $this
                 ->exception($e)
-                ->isInstanceOf('Alterway\Component\Workflow\Exception\AlreadyInEndingNodeException')
-                ->hasMessage('Already at the ending node');
+                ->isInstanceOf('Alterway\Component\Workflow\Exception\NoStartingNodeBuilderException')
+                ;
         }
     }
 
-    public function testICantGoToNextCauseNoOpenTransition()
+    public function testICantGoToNextBecauseOfWorkflowNotInitialized()
     {
-        $spec = new \mock\Alterway\Component\Workflow\SpecificationInterface();
-        $this->calling($spec)->isStatisfiedBy = function () {
-            return false;
-        };
-
-        $builder = new Builder('A', 'B');
-        $builder
-            ->link('A', 'B', $spec);
-
-        $workflow = $builder->getWorflow();
-
         try {
-            $workflow->next($this->context);
+            $this
+                ->builder
+                ->open('A', $this->specification)
+                ->getWorflow()
+                ->next($this->context)
+                ;
         } catch (\Exception $e) {
             $this
                 ->exception($e)
-                ->isInstanceOf('Alterway\Component\Workflow\Exception\NoOpenTransitionException')
-                ->hasMessage('No open transition with current context');
+                ->isInstanceOf('Alterway\Component\Workflow\Exception\NotInitializedWorkflowException')
+                ;
         }
     }
 
-    public function testICantGoToNextCauseWrongToken()
+    public function testICantGoToNextBecauseOfInvalidToken()
     {
-        $spec = new \mock\Alterway\Component\Workflow\SpecificationInterface();
-        $this->calling($spec)->isStatisfiedBy = function () {
-            return true;
-        };
-
-        $builder = new \Alterway\Component\Workflow\Builder('A', 'C');
-        $builder
-            ->link('A', 'B', $spec)
-            ->link('B', 'C', $spec);
-
-        $workflow = $builder->getWorflow();
-
         try {
-            $workflow->setToken(new Token('D'));
+            $this
+                ->builder
+                ->open('A', $this->specification)
+                ->getWorflow()
+                ->initialize('B')
+                ;
         } catch (\Exception $e) {
             $this
                 ->exception($e)
                 ->isInstanceOf('Alterway\Component\Workflow\Exception\InvalidTokenException')
-                ->hasMessage('The given token is invalid');
+                ;
+        }
+    }
+
+    public function testICantGoToNextBecauseOfNoOpenTransition()
+    {
+        try {
+            $this
+                ->builder
+                ->open('A', $this->specification)
+                ->getWorflow()
+                ->initialize('A')
+                ->next($this->context)
+                ;
+        } catch (\Exception $e) {
+            $this
+                ->exception($e)
+                ->isInstanceOf('Alterway\Component\Workflow\Exception\NoOpenTransitionException')
+                ;
+        }
+    }
+
+    public function testICantHaveMoreThanTwoOpenedTransitions()
+    {
+        try {
+            $this
+                ->builder
+                ->open('A', $this->specification)
+                ->link('A', 'B', $this->specification)
+                ->link('A', 'C', $this->specification)
+                ->getWorflow()
+                ->initialize('A')
+                ->next($this->context)
+                ;
+        } catch (\Exception $e) {
+            $this
+                ->exception($e)
+                ->isInstanceOf('Alterway\Component\Workflow\Exception\MoreThanOneOpenTransitionException')
+                ;
         }
     }
 }

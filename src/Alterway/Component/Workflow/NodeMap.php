@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Alterway\Component\Workflow\Node;
+namespace Alterway\Component\Workflow;
 
 
-class NodeMap implements NodeMapInterface
+class NodeMap
 {
     /**
      * @var array
@@ -17,7 +17,11 @@ class NodeMap implements NodeMapInterface
     }
 
     /**
-     * @inheritdoc
+     * Gets a node by name.
+     *
+     * @param string $name
+     *
+     * @return Node
      */
     public function get($name)
     {
@@ -31,7 +35,11 @@ class NodeMap implements NodeMapInterface
     }
 
     /**
-     * @inheritdoc
+     * Checks if a node exists.
+     *
+     * @param string $name
+     *
+     * @return bool
      */
     public function has($name)
     {

@@ -4,39 +4,29 @@
 namespace Alterway\Component\Workflow;
 
 
-use Symfony\Component\DependencyInjection\Exception\ParameterNotFoundException;
-
 interface ContextInterface
 {
     /**
      * Adds parameters to the service container parameters.
      *
-     * @param array $parameters An array of parameters
-     *
-     * @api
+     * @param array $parameters
      */
     public function add(array $parameters);
 
     /**
      * Gets a service container parameter.
      *
-     * @param string $name The parameter name
+     * @param string $name
      *
-     * @return mixed  The parameter value
-     *
-     * @throws ParameterNotFoundException if the parameter is not defined
-     *
-     * @api
+     * @return mixed
      */
     public function get($name);
 
     /**
      * Sets a service container parameter.
      *
-     * @param string $name  The parameter name
-     * @param mixed $value The parameter value
-     *
-     * @api
+     * @param string $name
+     * @param mixed $value
      */
     public function set($name, $value);
 }
