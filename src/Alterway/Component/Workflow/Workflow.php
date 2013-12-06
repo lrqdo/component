@@ -3,93 +3,93 @@
 
 namespace Alterway\Component\Workflow;
 
-use Alterway\Component\Workflow\Event\WorkflowEvent;
-use Alterway\Component\Workflow\Exception\AlreadyInEndingNodeException;
-use Alterway\Component\Workflow\Exception\InvalidTokenException;
-use Alterway\Component\Workflow\Exception\MoreThanOneOpenTransitionException;
-use Alterway\Component\Workflow\Exception\NoOpenTransitionException;
-use Alterway\Component\Workflow\Node\NodeInterface;
-use Alterway\Component\Workflow\Node\NodeMapInterface;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 
-class Workflow implements WorkflowInterface
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
+class Workflow
 {
     /**
-     * @var NodeInterface
+     * @var Node
      */
     private $start;
 
     /**
-     * @var NodeMapInterface
+     * @var NodeMap
      */
     private $nodes;
 
     /**
-     * @var EventDispatcher
+     * @var EventDispatcherInterface
      */
-    protected $eventDispatcher;
+    private $eventDispatcher;
 
-    public function __construct(NodeInterface $start, NodeMapInterface $nodes, $eventDispatcher)
+    /**
+     * @var Node
+     */
+    private $current;
+
+
+    public function __construct(Node $start, NodeMap $nodes, EventDispatcherInterface $eventDispatcher)
     {
         $this->start = $start;
         $this->nodes = $nodes;
-        $this->current = $start;
-
-        if (null === $eventDispatcher) {
-            $eventDispatcher = new EventDispatcher();
-        }
         $this->eventDispatcher = $eventDispatcher;
+        $this->current = null;
     }
 
     /**
-     * @inheritdoc
+     * Initializes the workflow with a given token.
+     *
+     * @param string $token
+     *
+     * @return Workflow
+     *
+     * @throws Exception\InvalidTokenException
      */
-    public function setToken(Token $token)
+    public function initialize($token = null)
     {
-        if (!$this->nodes->has($token)) {
-            throw new InvalidTokenException();
+        if (null === $token) {
+            $this->current = $this->start;
+        } elseif ($this->nodes->has($token)) {
+            $this->current = $this->nodes->get($token);
+        } else {
+            throw new Exception\InvalidTokenException();
         }
-
-        $this->current = $this->nodes->get($token);
 
         return $this;
     }
 
     /**
-     * @inheritdoc
-     */
-    public function getToken()
-    {
-        return new Token($this->current->getName());
-    }
-
-    /**
-     * @inheritdoc
+     * Moves the current token to the next node of the workflow.
+     *
+     * @param ContextInterface $context
+     *
+     * @return Workflow
+     *
+     * @throws Exception\NotInitializedWorkflowException
+     * @throws Exception\NoOpenTransitionException
+     * @throws Exception\MoreThanOneOpenTransitionException
      */
     public function next(ContextInterface $context)
     {
+        if (null === $this->current) {
+            throw new Exception\NotInitializedWorkflowException();
+        }
+
         $transitions = $this->current->getOpenTransitions($context);
 
         if (0 === count($transitions)) {
-            throw new NoOpenTransitionException();
+            throw new Exception\NoOpenTransitionException();
         } elseif (1 < count($transitions)) {
-            throw new MoreThanOneOpenTransitionException();
+            throw new Exception\MoreThanOneOpenTransitionException();
         }
 
         $transition = array_pop($transitions);
-        $this->setToken(new Token($transition->getDestination()->getName()));
+        $token = $transition->getDestination()->getName();
 
-        $context->set('workflow', $this);
-
-        $event = new WorkflowEvent($context);
-        $this->eventDispatcher->dispatch($transition->getDestination()->getName(), $event);
+        $this->initialize($token);
+        $this->eventDispatcher->dispatch($token, new Event($context, $token));
 
         return $this;
-    }
-
-    public function init(ContextInterface $context)
-    {
-        $this->current = $this->start;
-        $this->next($context);
     }
 }

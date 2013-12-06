@@ -8,6 +8,6 @@ class NoOpenTransitionException extends \LogicException
 {
     public function __construct()
     {
-        return parent::__construct('No open transition with current context', 0);
+        return parent::__construct('No open transition with current context');
     }
 }

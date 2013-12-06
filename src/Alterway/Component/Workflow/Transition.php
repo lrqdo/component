@@ -4,17 +4,15 @@
 namespace Alterway\Component\Workflow;
 
 
-use Alterway\Component\Workflow\Node\NodeInterface;
-
-class Transition implements TransitionInterface
+class Transition
 {
     /**
-     * @var NodeInterface
+     * @var Node
      */
     private $src;
 
     /**
-     * @var NodeInterface
+     * @var Node
      */
     private $dst;
 
@@ -23,7 +21,8 @@ class Transition implements TransitionInterface
      */
     private $spec;
 
-    public function __construct(NodeInterface $src, NodeInterface $dst, SpecificationInterface $spec)
+
+    public function __construct(Node $src, Node $dst, SpecificationInterface $spec)
     {
         $this->src = $src;
         $this->dst = $dst;
@@ -31,7 +30,11 @@ class Transition implements TransitionInterface
     }
 
     /**
-     * @inheritdoc
+     * Checks if the current transition satisfies the specifiation on the given context.
+     *
+     * @param ContextInterface $context
+     *
+     * @return bool
      */
     public function isOpen(ContextInterface $context)
     {
@@ -39,7 +42,9 @@ class Transition implements TransitionInterface
     }
 
     /**
-     * @inheritdoc
+     * Returns the destination of the current transition.
+     *
+     * @return Node
      */
     public function getDestination()
     {
