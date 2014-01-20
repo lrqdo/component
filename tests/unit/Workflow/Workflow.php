@@ -27,7 +27,7 @@ class Workflow extends atoum
         $this
             ->builder
             ->open('A', $this->specification)
-            ->getWorflow()
+            ->getWorkflow()
             ->initialize()
             ->next($this->context)
             ;
@@ -59,7 +59,7 @@ class Workflow extends atoum
         try {
             $this
                 ->builder
-                ->getWorflow()
+                ->getWorkflow()
                 ;
         } catch (\Exception $e) {
             $this
@@ -75,7 +75,7 @@ class Workflow extends atoum
             $this
                 ->builder
                 ->open('A', $this->specification)
-                ->getWorflow()
+                ->getWorkflow()
                 ->next($this->context)
                 ;
         } catch (\Exception $e) {
@@ -92,7 +92,7 @@ class Workflow extends atoum
             $this
                 ->builder
                 ->open('A', $this->specification)
-                ->getWorflow()
+                ->getWorkflow()
                 ->initialize('B')
                 ;
         } catch (\Exception $e) {
@@ -109,7 +109,7 @@ class Workflow extends atoum
             $this
                 ->builder
                 ->open('A', $this->specification)
-                ->getWorflow()
+                ->getWorkflow()
                 ->initialize('A')
                 ->next($this->context)
                 ;
@@ -129,7 +129,7 @@ class Workflow extends atoum
                 ->open('A', $this->specification)
                 ->link('A', 'B', $this->specification)
                 ->link('A', 'C', $this->specification)
-                ->getWorflow()
+                ->getWorkflow()
                 ->initialize('A')
                 ->next($this->context)
                 ;

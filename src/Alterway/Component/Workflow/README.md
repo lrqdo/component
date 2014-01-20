@@ -92,7 +92,7 @@ class ArticleService
             ->link('article.draft', 'article.published', new PublishableArticleSpecification())
             ->link('article.published', 'article.deleted', new DeletableArticleSpecification())
             ->link('article.published', 'article.archived', new ArchivableArticleSpecification())
-            ->getWorflow();
+            ->getWorkflow();
 
         $eventDispatcher->addSubscriber(new ArticleSubscriber());
     }
