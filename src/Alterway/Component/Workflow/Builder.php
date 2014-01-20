@@ -77,7 +77,7 @@ class Builder
      *
      * @throws Exception\NoStartingNodeBuilderException
      */
-    public function getWorflow()
+    public function getWorkflow()
     {
         if (null === $this->start) {
             throw new Exception\NoStartingNodeBuilderException();
