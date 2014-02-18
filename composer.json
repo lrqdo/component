@@ -15,5 +15,8 @@
     },
     "require-dev": {
         "atoum/atoum": "dev-master"
+    },
+    "suggest": {
+        "alterway/component-workflow": "Workflow management for PHP"
     }
 }
